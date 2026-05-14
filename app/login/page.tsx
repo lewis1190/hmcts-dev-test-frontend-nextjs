@@ -44,17 +44,6 @@ export default function LoginPage() {
         }
     };
 
-    const handleGoogle = async () => {
-        setError(null);
-        try {
-            await signInWithGoogle();
-            router.push('/tasks');
-        } catch (err) {
-            const message = err instanceof Error ? err.message : 'Google sign in failed';
-            setError(message);
-        }
-    };
-
     return (
         <>
             <main className="govuk-main-wrapper">
@@ -112,9 +101,6 @@ export default function LoginPage() {
                                     </button>
                                     <button type="button" className="govuk-button govuk-button--secondary" onClick={handleSignUp} data-module="govuk-button">
                                         Create account
-                                    </button>
-                                    <button type="button" className="govuk-button govuk-button--secondary" onClick={handleGoogle} data-module="govuk-button">
-                                        Sign in with Google
                                     </button>
                                 </div>
                             </form>
