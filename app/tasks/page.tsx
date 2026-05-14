@@ -6,6 +6,7 @@ import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { Task } from './interfaces/task.interface';
 import { TaskStatus } from './enums/task-status.enum';
+import { validateDateFields } from './helpers';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
@@ -19,6 +20,7 @@ export default function TasksPage() {
     const [dueDay, setDueDay] = useState('');
     const [dueMonth, setDueMonth] = useState('');
     const [dueYear, setDueYear] = useState('');
+    const [dateErrors, setDateErrors] = useState<{ day?: string; month?: string; year?: string }>({});
 
     useEffect(() => {
         if (!loading && !user) router.push('/login');
@@ -41,6 +43,12 @@ export default function TasksPage() {
         initGovUK();
     }, [tasks]);
 
+    const validateDate = (): boolean => {
+        const errors = validateDateFields(dueDay, dueMonth, dueYear);
+        setDateErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const fetchTasks = async () => {
         setLoadingTasks(true);
         try {
@@ -60,6 +68,12 @@ export default function TasksPage() {
 
     const createTask = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validate date before submission
+        if (!validateDate()) {
+            return;
+        }
+
         try {
             // Convert day, month, year to ISO string
             let dueDate: string | undefined;
@@ -78,13 +92,15 @@ export default function TasksPage() {
             setDueDay('');
             setDueMonth('');
             setDueYear('');
+            setDateErrors({});
             fetchTasks();
         } catch (err) {
             console.error(err);
         }
     };
 
-    const updateStatus = async (id: string, status: string) => {
+    const updateStatus = async (id: string | undefined, status: string) => {
+        if (!id) return;
         try {
             const token = user ? await user.getIdToken() : null;
             await axios.patch(`${API_BASE}/tasks/${id}/status`, { status }, { headers: token ? { Authorization: `Bearer ${token}` } : undefined });
@@ -94,7 +110,8 @@ export default function TasksPage() {
         }
     };
 
-    const deleteTask = async (id: string) => {
+    const deleteTask = async (id: string | undefined) => {
+        if (!id) return;
         try {
             const token = user ? await user.getIdToken() : null;
             await axios.delete(`${API_BASE}/tasks/${id}`, {
@@ -172,11 +189,16 @@ export default function TasksPage() {
                                                 />
                                             </div>
 
-                                            <div className="govuk-form-group">
+                                            <div className={`govuk-form-group ${dateErrors.day || dateErrors.month || dateErrors.year ? 'govuk-form-group--error' : ''}`}>
                                                 <fieldset className="govuk-fieldset" role="group" aria-describedby="passport-issued-hint">
                                                     <label className="govuk-label govuk-label--m" htmlFor="description">
                                                         Due Date
                                                     </label>
+                                                    {(dateErrors.day || dateErrors.month || dateErrors.year) && (
+                                                        <p className="govuk-error-message">
+                                                            <span className="govuk-visually-hidden">Error:</span> {dateErrors.day || dateErrors.month || dateErrors.year}
+                                                        </p>
+                                                    )}
                                                     <div className="govuk-date-input" id="passport-issued">
                                                         <div className="govuk-date-input__item">
                                                             <div className="govuk-form-group">
@@ -184,13 +206,18 @@ export default function TasksPage() {
                                                                     Day
                                                                 </label>
                                                                 <input
-                                                                    className="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${dateErrors.day ? 'govuk-input--error' : ''}`}
                                                                     id="passport-issued-day"
                                                                     name="passport-issued-day"
                                                                     type="text"
                                                                     inputMode="numeric"
                                                                     value={dueDay}
-                                                                    onChange={(e) => setDueDay(e.target.value)}
+                                                                    onChange={(e) => {
+                                                                        setDueDay(e.target.value);
+                                                                        if (dateErrors.day) {
+                                                                            setDateErrors((prev) => ({ ...prev, day: undefined }));
+                                                                        }
+                                                                    }}
                                                                 />
                                                             </div>
                                                         </div>
@@ -200,13 +227,18 @@ export default function TasksPage() {
                                                                     Month
                                                                 </label>
                                                                 <input
-                                                                    className="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${dateErrors.month ? 'govuk-input--error' : ''}`}
                                                                     id="passport-issued-month"
                                                                     name="passport-issued-month"
                                                                     type="text"
                                                                     inputMode="numeric"
                                                                     value={dueMonth}
-                                                                    onChange={(e) => setDueMonth(e.target.value)}
+                                                                    onChange={(e) => {
+                                                                        setDueMonth(e.target.value);
+                                                                        if (dateErrors.month) {
+                                                                            setDateErrors((prev) => ({ ...prev, month: undefined }));
+                                                                        }
+                                                                    }}
                                                                 />
                                                             </div>
                                                         </div>
@@ -216,13 +248,18 @@ export default function TasksPage() {
                                                                     Year
                                                                 </label>
                                                                 <input
-                                                                    className="govuk-input govuk-date-input__input govuk-input--width-4"
+                                                                    className={`govuk-input govuk-date-input__input govuk-input--width-4 ${dateErrors.year ? 'govuk-input--error' : ''}`}
                                                                     id="passport-issued-year"
                                                                     name="passport-issued-year"
                                                                     type="text"
                                                                     inputMode="numeric"
                                                                     value={dueYear}
-                                                                    onChange={(e) => setDueYear(e.target.value)}
+                                                                    onChange={(e) => {
+                                                                        setDueYear(e.target.value);
+                                                                        if (dateErrors.year) {
+                                                                            setDateErrors((prev) => ({ ...prev, year: undefined }));
+                                                                        }
+                                                                    }}
                                                                 />
                                                             </div>
                                                         </div>
