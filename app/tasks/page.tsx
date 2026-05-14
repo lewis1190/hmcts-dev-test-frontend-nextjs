@@ -28,6 +28,19 @@ export default function TasksPage() {
         if (user) fetchTasks();
     }, [user]);
 
+    useEffect(() => {
+        // Re-initialize GOV.UK components whenever tasks are loaded
+        const initGovUK = async () => {
+            try {
+                const { initAll } = await import('govuk-frontend');
+                initAll();
+            } catch (err) {
+                console.error('Failed to re-initialize GOV.UK Frontend:', err);
+            }
+        };
+        initGovUK();
+    }, [tasks]);
+
     const fetchTasks = async () => {
         setLoadingTasks(true);
         try {
@@ -133,7 +146,7 @@ export default function TasksPage() {
                                     </h3>
                                 </div>
                                 <div id="accordion-default-content-1" className="govuk-accordion__section-content">
-                                    <section className="govuk-form-group" style={{ marginBottom: '3rem' }}>
+                                    <section className="govuk-form-group">
                                         {/* <h2 className="govuk-heading-m">Create new task</h2> */}
                                         <form onSubmit={createTask}>
                                             <div className="govuk-form-group">
@@ -243,7 +256,7 @@ export default function TasksPage() {
                             {loadingTasks ? (
                                 <div className="govuk-body">Loading tasks...</div>
                             ) : tasks.length === 0 ? (
-                                <div className="govuk-body">No tasks yet. Create one to get started.</div>
+                                <div className="govuk-body">No tasks available.</div>
                             ) : (
                                 <div className="govuk-summary-list">
                                     {tasks.map((t) => (

@@ -11,9 +11,11 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
 
-    if (user) {
-        router.push('/tasks');
-    }
+    useEffect(() => {
+        if (user) {
+            router.push('/tasks');
+        }
+    }, [user, router]);
 
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
