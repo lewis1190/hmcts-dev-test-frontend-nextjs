@@ -12,9 +12,17 @@ export const validateDateFields = (
 ): { day?: string; month?: string; year?: string } => {
     const errors: { day?: string; month?: string; year?: string } = {};
 
-    // Check if date fields are provided
+    // Check if date fields are provided - date is mandatory
     if (!day && !month && !year) {
-        // Date is optional, no error
+        errors.day = 'Enter a date';
+        return errors;
+    }
+
+    // Check if all date fields are provided
+    if ((day || month || year) && (!day || !month || !year)) {
+        if (!day) errors.day = 'Enter a day';
+        if (!month) errors.month = 'Enter a month';
+        if (!year) errors.year = 'Enter a year';
         return errors;
     }
 
@@ -42,13 +50,6 @@ export const validateDateFields = (
         }
     }
 
-    // Check if all date fields are provided
-    if ((day || month || year) && (!day || !month || !year)) {
-        if (!day) errors.day = 'Enter a day';
-        if (!month) errors.month = 'Enter a month';
-        if (!year) errors.year = 'Enter a year';
-    }
-
     // Validate date combination (e.g., Feb 30 is invalid)
     if (day && month && year && !errors.day && !errors.month && !errors.year) {
         const dayNum = parseInt(day, 10);
@@ -61,6 +62,49 @@ export const validateDateFields = (
         if (testDate.getUTCDate() !== dayNum || testDate.getUTCMonth() + 1 !== monthNum) {
             errors.day = 'Enter a valid date';
         }
+    }
+
+    return errors;
+};
+
+/**
+ * Validates time input fields (hour, minute)
+ * @param hour - Hour value as string or undefined
+ * @param minute - Minute value as string or undefined
+ * @returns Object with field errors or empty object if valid
+ */
+export const validateTimeFields = (
+    hour: string | undefined,
+    minute: string | undefined
+): { hour?: string; minute?: string } => {
+    const errors: { hour?: string; minute?: string } = {};
+
+    // Check if time fields are provided
+    if (!hour && !minute) {
+        // Time is optional, no error
+        return errors;
+    }
+
+    // Validate hour
+    if (hour) {
+        const hourNum = parseInt(hour, 10);
+        if (isNaN(hourNum) || hourNum < 0 || hourNum > 23) {
+            errors.hour = 'Hour must be between 0 and 23';
+        }
+    }
+
+    // Validate minute
+    if (minute) {
+        const minuteNum = parseInt(minute, 10);
+        if (isNaN(minuteNum) || minuteNum < 0 || minuteNum > 59) {
+            errors.minute = 'Minute must be between 0 and 59';
+        }
+    }
+
+    // Check if all time fields are provided
+    if ((hour || minute) && (!hour || !minute)) {
+        if (!hour) errors.hour = 'Enter an hour';
+        if (!minute) errors.minute = 'Enter a minute';
     }
 
     return errors;

@@ -6,7 +6,7 @@ import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { Task } from './interfaces/task.interface';
 import { TaskStatus } from './enums/task-status.enum';
-import { validateDateFields } from './helpers';
+import { validateDateFields, validateTimeFields } from './helpers';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
@@ -20,7 +20,10 @@ export default function TasksPage() {
     const [dueDay, setDueDay] = useState('');
     const [dueMonth, setDueMonth] = useState('');
     const [dueYear, setDueYear] = useState('');
+    const [dueHour, setDueHour] = useState('');
+    const [dueMinute, setDueMinute] = useState('');
     const [dateErrors, setDateErrors] = useState<{ day?: string; month?: string; year?: string }>({});
+    const [timeErrors, setTimeErrors] = useState<{ hour?: string; minute?: string }>({});
 
     useEffect(() => {
         if (!loading && !user) router.push('/login');
@@ -49,6 +52,12 @@ export default function TasksPage() {
         return Object.keys(errors).length === 0;
     };
 
+    const validateTime = (): boolean => {
+        const errors = validateTimeFields(dueHour, dueMinute);
+        setTimeErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const fetchTasks = async () => {
         setLoadingTasks(true);
         try {
@@ -69,16 +78,18 @@ export default function TasksPage() {
     const createTask = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validate date before submission
-        if (!validateDate()) {
+        // Validate date and time before submission
+        if (!validateDate() || !validateTime()) {
             return;
         }
 
         try {
-            // Convert day, month, year to ISO string
+            // Convert day, month, year, hour, minute to ISO string
             let dueDate: string | undefined;
             if (dueDay && dueMonth && dueYear) {
-                const date = new Date(`${dueYear}-${dueMonth.padStart(2, '0')}-${dueDay.padStart(2, '0')}T00:00:00Z`);
+                const hour = dueHour ? dueHour.padStart(2, '0') : '00';
+                const minute = dueMinute ? dueMinute.padStart(2, '0') : '00';
+                const date = new Date(`${dueYear}-${dueMonth.padStart(2, '0')}-${dueDay.padStart(2, '0')}T${hour}:${minute}:00Z`);
                 dueDate = date.toISOString();
             }
 
@@ -92,7 +103,10 @@ export default function TasksPage() {
             setDueDay('');
             setDueMonth('');
             setDueYear('');
+            setDueHour('');
+            setDueMinute('');
             setDateErrors({});
+            setTimeErrors({});
             fetchTasks();
         } catch (err) {
             console.error(err);
@@ -143,6 +157,7 @@ export default function TasksPage() {
                             </h1>
                             <div style={{ float: 'right', marginTop: '0.5rem' }}>
                                 <p className="govuk-body-s" style={{ marginBottom: '0.5rem' }}>
+                                    <b>Signed in as:</b> <br />
                                     {user?.email}
                                 </p>
                                 <button onClick={() => signOut().then(() => router.push('/login'))} className="govuk-button govuk-button--secondary" data-module="govuk-button">
@@ -190,7 +205,7 @@ export default function TasksPage() {
                                             </div>
 
                                             <div className={`govuk-form-group ${dateErrors.day || dateErrors.month || dateErrors.year ? 'govuk-form-group--error' : ''}`}>
-                                                <fieldset className="govuk-fieldset" role="group" aria-describedby="passport-issued-hint">
+                                                <fieldset className="govuk-fieldset" role="group" aria-describedby="due-date-hint">
                                                     <label className="govuk-label govuk-label--m" htmlFor="description">
                                                         Due Date
                                                     </label>
@@ -199,16 +214,16 @@ export default function TasksPage() {
                                                             <span className="govuk-visually-hidden">Error:</span> {dateErrors.day || dateErrors.month || dateErrors.year}
                                                         </p>
                                                     )}
-                                                    <div className="govuk-date-input" id="passport-issued">
+                                                    <div className="govuk-date-input" id="due-date">
                                                         <div className="govuk-date-input__item">
                                                             <div className="govuk-form-group">
-                                                                <label className="govuk-label govuk-date-input__label" htmlFor="passport-issued-day">
+                                                                <label className="govuk-label govuk-date-input__label" htmlFor="due-date-day">
                                                                     Day
                                                                 </label>
                                                                 <input
                                                                     className={`govuk-input govuk-date-input__input govuk-input--width-2 ${dateErrors.day ? 'govuk-input--error' : ''}`}
-                                                                    id="passport-issued-day"
-                                                                    name="passport-issued-day"
+                                                                    id="due-date-day"
+                                                                    name="due-date-day"
                                                                     type="text"
                                                                     inputMode="numeric"
                                                                     value={dueDay}
@@ -223,13 +238,13 @@ export default function TasksPage() {
                                                         </div>
                                                         <div className="govuk-date-input__item">
                                                             <div className="govuk-form-group">
-                                                                <label className="govuk-label govuk-date-input__label" htmlFor="passport-issued-month">
+                                                                <label className="govuk-label govuk-date-input__label" htmlFor="due-date-month">
                                                                     Month
                                                                 </label>
                                                                 <input
                                                                     className={`govuk-input govuk-date-input__input govuk-input--width-2 ${dateErrors.month ? 'govuk-input--error' : ''}`}
-                                                                    id="passport-issued-month"
-                                                                    name="passport-issued-month"
+                                                                    id="due-date-month"
+                                                                    name="due-date-month"
                                                                     type="text"
                                                                     inputMode="numeric"
                                                                     value={dueMonth}
@@ -244,13 +259,13 @@ export default function TasksPage() {
                                                         </div>
                                                         <div className="govuk-date-input__item">
                                                             <div className="govuk-form-group">
-                                                                <label className="govuk-label govuk-date-input__label" htmlFor="passport-issued-year">
+                                                                <label className="govuk-label govuk-date-input__label" htmlFor="due-date-year">
                                                                     Year
                                                                 </label>
                                                                 <input
                                                                     className={`govuk-input govuk-date-input__input govuk-input--width-4 ${dateErrors.year ? 'govuk-input--error' : ''}`}
-                                                                    id="passport-issued-year"
-                                                                    name="passport-issued-year"
+                                                                    id="due-date-year"
+                                                                    name="due-date-year"
                                                                     type="text"
                                                                     inputMode="numeric"
                                                                     value={dueYear}
@@ -266,21 +281,66 @@ export default function TasksPage() {
                                                     </div>
                                                 </fieldset>
                                             </div>
+
+                                            <div className={`govuk-form-group ${timeErrors.hour || timeErrors.minute ? 'govuk-form-group--error' : ''}`}>
+                                                <fieldset className="govuk-fieldset" role="group" aria-describedby="time-issued-hint">
+                                                    <label className="govuk-label govuk-label--m" htmlFor="description">
+                                                        Time (optional)
+                                                    </label>
+                                                    {(timeErrors.hour || timeErrors.minute) && (
+                                                        <p className="govuk-error-message">
+                                                            <span className="govuk-visually-hidden">Error:</span> {timeErrors.hour || timeErrors.minute}
+                                                        </p>
+                                                    )}
+                                                    <div className="govuk-date-input" id="time-issued">
+                                                        <div className="govuk-date-input__item">
+                                                            <div className="govuk-form-group">
+                                                                <label className="govuk-label govuk-date-input__label" htmlFor="time-issued-hour">
+                                                                    Hour
+                                                                </label>
+                                                                <input
+                                                                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${timeErrors.hour ? 'govuk-input--error' : ''}`}
+                                                                    id="time-issued-hour"
+                                                                    name="time-issued-hour"
+                                                                    type="text"
+                                                                    inputMode="numeric"
+                                                                    placeholder="HH"
+                                                                    value={dueHour}
+                                                                    onChange={(e) => {
+                                                                        setDueHour(e.target.value);
+                                                                        if (timeErrors.hour) {
+                                                                            setTimeErrors((prev) => ({ ...prev, hour: undefined }));
+                                                                        }
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="govuk-date-input__item">
+                                                            <div className="govuk-form-group">
+                                                                <label className="govuk-label govuk-date-input__label" htmlFor="time-issued-minute">
+                                                                    Minute
+                                                                </label>
+                                                                <input
+                                                                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${timeErrors.minute ? 'govuk-input--error' : ''}`}
+                                                                    id="time-issued-minute"
+                                                                    name="time-issued-minute"
+                                                                    type="text"
+                                                                    inputMode="numeric"
+                                                                    placeholder="MM"
+                                                                    value={dueMinute}
+                                                                    onChange={(e) => {
+                                                                        setDueMinute(e.target.value);
+                                                                        if (timeErrors.minute) {
+                                                                            setTimeErrors((prev) => ({ ...prev, minute: undefined }));
+                                                                        }
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
                                             <br />
-                                            {/* <div className="govuk-form-group">
-                                                <label className="govuk-label govuk-label--m" htmlFor="dueAt">
-                                                    Due date and time (ISO format)
-                                                </label>
-                                                <input
-                                                    className="govuk-input"
-                                                    id="dueAt"
-                                                    name="dueAt"
-                                                    type="text"
-                                                    placeholder="2024-12-31T23:59:00"
-                                                    value={dueAt}
-                                                    onChange={(e) => setDueAt(e.target.value)}
-                                                />
-                                            </div> */}
                                             <button type="submit" className="govuk-button" data-module="govuk-button">
                                                 Create task
                                             </button>
@@ -291,7 +351,7 @@ export default function TasksPage() {
                         </div>
 
                         <section>
-                            <h2 className="govuk-heading-m">All tasks</h2>
+                            <h2 className="govuk-heading-m">All tasks (sorted by due date)</h2>
                             {loadingTasks ? (
                                 <div className="govuk-body">Loading tasks...</div>
                             ) : tasks.length === 0 ? (
