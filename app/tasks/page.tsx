@@ -48,7 +48,9 @@ export default function TasksPage() {
             const res = await axios.get(`${API_BASE}/tasks`, {
                 headers: token ? { Authorization: `Bearer ${token}` } : undefined
             });
-            setTasks(res.data || []);
+            // Handle both array response and object with tasks property
+            const tasksData = Array.isArray(res.data) ? res.data : res.data?.tasks || [];
+            setTasks(tasksData);
         } catch (err) {
             console.error(err);
         } finally {
