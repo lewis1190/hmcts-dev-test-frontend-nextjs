@@ -1,11 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '../../components/AuthProvider';
 import { initAll } from 'govuk-frontend';
 
 export default function LoginPage() {
-    const { signIn, signUp, signInWithGoogle, user } = useAuth();
+    const { signIn, user } = useAuth();
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,18 +29,6 @@ export default function LoginPage() {
             router.push('/tasks');
         } catch (err) {
             const message = err instanceof Error ? err.message : 'Sign in failed';
-            setError(message);
-        }
-    };
-
-    const handleSignUp = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
-        try {
-            await signUp(email, password);
-            router.push('/tasks');
-        } catch (err) {
-            const message = err instanceof Error ? err.message : 'Sign up failed';
             setError(message);
         }
     };
@@ -99,11 +88,15 @@ export default function LoginPage() {
                                     <button type="submit" className="govuk-button" data-module="govuk-button">
                                         Sign in
                                     </button>
-                                    <button type="button" className="govuk-button govuk-button--secondary" onClick={handleSignUp} data-module="govuk-button">
-                                        Create account
-                                    </button>
                                 </div>
                             </form>
+
+                            <p className="govuk-body">
+                                Don't have an account? &nbsp;
+                                <Link href="/signup" className="govuk-link">
+                                    Create account
+                                </Link>
+                            </p>
                         </div>
                     </div>
                 </div>
