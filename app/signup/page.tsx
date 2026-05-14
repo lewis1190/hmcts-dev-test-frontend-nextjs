@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../components/AuthProvider';
-import { initAll } from 'govuk-frontend';
 
 export default function SignupPage() {
     const { signUp, user } = useAuth();
@@ -12,9 +11,7 @@ export default function SignupPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        initAll();
-    }, []);
+
 
     if (user) {
         router.push('/tasks');

@@ -4,7 +4,6 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
-import { initAll } from 'govuk-frontend';
 import { Task } from './interfaces/task.interface';
 import { TaskStatus } from './enums/task-status.enum';
 
@@ -22,23 +21,12 @@ export default function TasksPage() {
     const [dueYear, setDueYear] = useState('');
 
     useEffect(() => {
-        initAll();
-    }, []);
-
-    useEffect(() => {
         if (!loading && !user) router.push('/login');
     }, [user, loading, router]);
 
     useEffect(() => {
         if (user) fetchTasks();
     }, [user]);
-
-    useEffect(() => {
-        // Re-initialize GOV.UK components after user is authenticated and content is rendered
-        if (user && !loading) {
-            initAll();
-        }
-    }, [user, loading]);
 
     const fetchTasks = async () => {
         setLoadingTasks(true);

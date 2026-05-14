@@ -4,7 +4,6 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useAuth } from '../../../components/AuthProvider';
 import { useRouter, useParams } from 'next/navigation';
-import { initAll } from 'govuk-frontend';
 import { Task } from '../interfaces/task.interface';
 import { TaskStatus } from '../enums/task-status.enum';
 
@@ -22,10 +21,6 @@ export default function TaskDetailPage() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState<TaskStatus>(TaskStatus.NotStarted);
-
-    useEffect(() => {
-        initAll();
-    }, []);
 
     useEffect(() => {
         if (!loading && !user) router.push('/login');

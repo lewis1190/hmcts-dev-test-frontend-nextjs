@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../components/AuthProvider";
 import GovUKBanner from "../components/GovUKBanner";
+import GovUKInitializer from "../components/GovUKInitializer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,8 @@ export default function RootLayout({
         <link rel="stylesheet" href="/govuk-frontend.min.css" />
       </head>
       <body className="min-h-full flex flex-col govuk-frontend-supported">
-      <GovUKBanner />
+        <GovUKInitializer />
+        <GovUKBanner />
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
