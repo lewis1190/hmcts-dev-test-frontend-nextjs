@@ -34,13 +34,18 @@ export default function Home() {
             <h2 className="govuk-heading-m">Resources</h2>
             <ul className="govuk-list govuk-list--bullet">
               <li>
-                <a href="https://design-system.service.gov.uk/" className="govuk-link">
-                  GOV.UK Design System
+                <a href="https://github.com/lewis1190/hmcts-dev-test-frontend-nextjs" className="govuk-link">
+                  Frontend GitHub Repository
                 </a>
               </li>
               <li>
-                <a href="https://www.gov.uk/" className="govuk-link">
-                  Official GOV.UK website
+                <a href="https://github.com/lewis1190/hmcts-dev-test-backend-nestjs" className="govuk-link">
+                  Backend GitHub Repository
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/hmcts/dts-developer-challenge" className="govuk-link">
+                  Official DTS Developer Challenge Brief GitHub Repository
                 </a>
               </li>
             </ul>
