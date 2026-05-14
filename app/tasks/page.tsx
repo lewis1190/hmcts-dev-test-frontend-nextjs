@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { initAll } from 'govuk-frontend';
@@ -260,9 +261,11 @@ export default function TasksPage() {
                                     {tasks.map((t) => (
                                         <div key={t.id} className="govuk-summary-list__row" style={{ paddingTop: '1rem', paddingBottom: '1rem', borderTop: '1px solid #b1b4b6' }}>
                                             <div className="govuk-summary-list__key" style={{ width: '40%' }}>
-                                                <div className="govuk-heading-s" style={{ marginTop: 0, marginBottom: '0.5rem' }}>
-                                                    {t.title}
-                                                </div>
+                                                <Link href={`/tasks/${t.id}`} className="govuk-link">
+                                                    <div className="govuk-heading-s" style={{ marginTop: 0, marginBottom: '0.5rem' }}>
+                                                        {t.title}
+                                                    </div>
+                                                </Link>
                                                 {t.description && (
                                                     <p className="govuk-body-s" style={{ marginBottom: '0.25rem' }}>
                                                         {t.description}
@@ -288,7 +291,14 @@ export default function TasksPage() {
                                                 </select>
                                             </div>
                                             <div className="govuk-summary-list__actions" style={{ width: '30%', textAlign: 'right' }}>
-                                                <button className="govuk-link govuk-link--no-visited-state" onClick={() => deleteTask(t.id)} style={{ color: '#d4351c', cursor: 'pointer' }}>
+                                                <Link href={`/tasks/${t.id}`} className="govuk-link govuk-link--no-visited-state">
+                                                    View
+                                                </Link>
+                                                <button
+                                                    className="govuk-link govuk-link--no-visited-state"
+                                                    onClick={() => deleteTask(t.id)}
+                                                    style={{ color: '#d4351c', cursor: 'pointer', marginLeft: '1rem', border: 'none', background: 'none', padding: 0 }}
+                                                >
                                                     Delete
                                                 </button>
                                             </div>
