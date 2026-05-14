@@ -51,7 +51,7 @@ export default function LoginPage() {
                                 <label className="govuk-label" htmlFor="email">
                                     Email address
                                 </label>
-                                <input className="govuk-input" id="email" name="email" type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                <input className="govuk-input govuk-input--width-20" id="email" name="email" type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
                             </div>
 
                             <div className="govuk-form-group">
@@ -59,7 +59,7 @@ export default function LoginPage() {
                                     Password
                                 </label>
                                 <input
-                                    className="govuk-input"
+                                    className="govuk-input govuk-input--width-20"
                                     id="password"
                                     name="password"
                                     type="password"
@@ -78,7 +78,7 @@ export default function LoginPage() {
                         </form>
 
                         <p className="govuk-body">
-                            Don't have an account? &nbsp;
+                            {`Don't have an account?`} &nbsp;
                             <Link href="/signup" className="govuk-link">
                                 Create account
                             </Link>

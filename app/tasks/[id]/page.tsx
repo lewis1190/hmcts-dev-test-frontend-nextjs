@@ -53,8 +53,8 @@ export default function TaskDetailPage() {
     const updateTask = async () => {
         try {
             const token = user ? await user.getIdToken() : null;
-            await axios.patch(`${API_BASE}/tasks/${taskId}`, { title, description, status }, { headers: token ? { Authorization: `Bearer ${token}` } : undefined });
-            setTask({ ...task, title, description, status } as Task);
+            const res = await axios.patch(`${API_BASE}/tasks/${taskId}`, { title, description, status }, { headers: token ? { Authorization: `Bearer ${token}` } : undefined });
+            setTask(res.data);
             setIsEditing(false);
         } catch (err) {
             console.error(err);
