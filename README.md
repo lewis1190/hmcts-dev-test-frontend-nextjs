@@ -34,3 +34,22 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Local development — frontend + Firebase Auth + backend
+
+1. Copy `.env.local.example` to `.env.local` and fill in your Firebase values and `NEXT_PUBLIC_API_BASE_URL` (your NestJS backend).
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the dev server:
+
+```bash
+npm run dev
+```
+
+4. Open http://localhost:3000 and go to `/login` to sign in. The tasks UI is at `/tasks` and will call your backend for CRUD operations.
+
