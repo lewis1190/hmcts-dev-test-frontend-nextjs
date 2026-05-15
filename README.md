@@ -32,12 +32,12 @@ As this was my first time handling the GOV.UK frontend library, AI tools were us
 ## Features
 
 -   **User Authentication**: Secure Firebase authentication with protected routes
--   **Task Management**: Create, read, update, and delete tasks with real-time status tracking
+-   **Task Management**: Create, read, update, and delete tasks.
 -   **Form Validation**: Comprehensive client-side validation with real-time error feedback
--   **Accessible Design**: Built with GOV.UK Frontend 6.1.0 for WCAG 2.1 compliance
--   **Responsive UI**: Mobile-first approach with GOV.UK styling
+-   **Accessible Design**: Built with GOV.UK Frontend 6.1.0.
+-   **Responsive UI**: Functional on both desktop and mobile devices.
 -   **Date/Time Input**: Flexible date and time input fields with validation, using the GOV.UK frontend styles with React's FormEvent handling.
--   **API Integration**: Communication with NestJS backend
+-   **API Integration**: Communication with dedicated NestJS backend
 
 ## Project Structure
 
@@ -114,7 +114,7 @@ gov-frontend-custom/
 
 ### Prerequisites
 
-Ensure you have the following installed:
+This application was built with the following technologies:
 
 -   Node.js 22.17.0 or later
 -   npm 10.9.2 or later
@@ -207,3 +207,4 @@ This project is an MVP of the features requested by the brief. If I were to cont
 -   Some files are quite large. Ideally the UI would be further split into components to improve readability.
 -   JSDoc comments for all functions and components for readability.
 -   Adding comments on complex snippets of code.
+-   Whilst the app is functional on tablet and mobile devices, there are a couple of small layout issues that could be fixed to improve the user flow of the platform.
