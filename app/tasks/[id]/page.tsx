@@ -154,9 +154,9 @@ export default function TaskDetailPage() {
                                 {task.dueDate && (
                                     <div className="govuk-summary-list__row">
                                         <dt className="govuk-summary-list__key">Due date</dt>
-                                        <dd className="govuk-summary-list__value" style={{ color: isOverdue(task.dueDate) ? '#d4351c' : 'inherit' }}>
+                                        <dd className="govuk-summary-list__value" style={{ color: task.status === TaskStatus.Complete ? '#00823b' : isOverdue(task.dueDate) ? '#d4351c' : 'inherit' }}>
                                             {new Date(task.dueDate).toLocaleString()}
-                                            {isOverdue(task.dueDate) && <span style={{ marginLeft: '0.5rem', fontWeight: 'bold' }}>(Overdue)</span>}
+                                            {task.status !== TaskStatus.Complete && isOverdue(task.dueDate) && <span style={{ marginLeft: '0.5rem', fontWeight: 'bold' }}>(Overdue)</span>}
                                         </dd>
                                     </div>
                                 )}

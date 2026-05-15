@@ -375,7 +375,7 @@ export default function TasksPage() {
                                                     <p
                                                         className="govuk-body-xs"
                                                         style={{
-                                                            color: isOverdue(t.dueDate) ? '#d4351c' : '#626a6e',
+                                                            color: t.status === TaskStatus.Complete ? '#00823b' : isOverdue(t.dueDate) ? '#d4351c' : '#626a6e',
                                                             marginBottom: 0
                                                         }}
                                                     >

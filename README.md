@@ -4,7 +4,17 @@ This frontend has been created with NextJS as part of the dts-developer-challeng
 
 Parts of the GOV.UK Frontend library have been moved into the project root out of it's `node_modules` folder for compatibility with Tailwind and NextJS's engine.
 
-### Important Links
+## Tech Stack
+
+-   **Framework**: Next.js 16.2.6
+-   **Authentication and Database**: Firebase
+-   **UI Components**: GOV.UK Frontend 6.1.0
+-   **Node.js**: Built with 22.17.0
+-   **npm**: Built with 10.9.2
+
+## Important Links
+
+### Github Repositories
 
 -   [Backend API Repository](https://github.com/lewis1190/hmcts-dev-test-backend-nestjs)
 -   [DTS Developer Challenge Brief](https://github.com/hmcts/dts-developer-challenge)
@@ -17,17 +27,7 @@ Parts of the GOV.UK Frontend library have been moved into the project root out o
 
 ### AI Clause
 
-Due to the time constraints I had on this project, as well as my first time handling the GOV.UK frontend library, AI tools were used to increase efficiency when debugging unfamiliar code and unexpected issues, as well as code reviews for best practices. Predictive text was used to speed up the scaffolding of UI.
-
-### What I would do with more time
-
-Give more time on the project, I would do the following
-
--   A thorough review of the GOV.UK frontend library to ensure best practices and optimal use of components and styles. Currently there may be a few inconsistencies with my implementation vs the guidelines set by the library.
--   Whilst the backend has automated tests, the frontend currently does not. Automated tests would help ensure the stability of the site and also flag any UI bugs.
--   Some files are quite large. Ideally the UI would be further split into components to improve readibility.
--   JSDoc comments for all functions and components for readibility.
--   Adding comments on complex snippets of code.
+As this was my first time handling the GOV.UK frontend library, AI tools were used to increase efficiency when debugging unfamiliar code and unexpected issues, as well as code reviews for best practices. Predictive text was used to speed up the scaffolding of UI components.
 
 ## Features
 
@@ -36,18 +36,14 @@ Give more time on the project, I would do the following
 -   **Form Validation**: Comprehensive client-side validation with real-time error feedback
 -   **Accessible Design**: Built with GOV.UK Frontend 6.1.0 for WCAG 2.1 compliance
 -   **Responsive UI**: Mobile-first approach with GOV.UK styling
--   **Date/Time Input**: Flexible date and time input fields with validation
--   **API Integration**: Axios-based communication with NestJS backend
-
-## Tech Stack
-
--   **Framework**: Next.js 16.2.6
--   **Authentication and Database**: Firebase
--   **UI Components**: GOV.UK Frontend 6.1.0
--   **Node.js**: Built with 22.17.0
--   **npm**: Built with 10.9.2
+-   **Date/Time Input**: Flexible date and time input fields with validation, using the GOV.UK frontend styles with React's FormEvent handling.
+-   **API Integration**: Communication with NestJS backend
 
 ## Project Structure
+
+<details>
+
+<summary>Click to view Project Structure</summary>
 
 ```
 gov-frontend-custom/
@@ -80,7 +76,41 @@ gov-frontend-custom/
 └── Configuration files (tsconfig.json, next.config.ts, eslint.config.mjs, etc.)
 ```
 
-## Getting Started
+</details>
+
+## Project Screenshots
+
+<details>
+
+<summary>Click to view Screenshots</summary>
+
+![Backend Documentation](./readme_assets/swagger_docs.png)
+*1. Backend API Documentation with Swagger*
+
+![Landing Page](./readme_assets/desktop_1.png)
+*2. Landing Page*
+
+![Login Page](./readme_assets/desktop_2.png)
+*3. Login Page*
+
+![Create Account Page](./readme_assets/desktop_3.png)
+*4. Create Account Page*
+
+![Task List Page](./readme_assets/desktop_4.png)
+*5. Task List Page with Overdue Highlighting*
+
+![Creating a Task](./readme_assets/desktop_5.png)
+*6. Creating a Task with Date and Time Validation*
+
+![Viewing a Specific Task](./readme_assets/desktop_6.png)
+*7. Viewing a Specific Task*
+
+![Editing a Specific Task](./readme_assets/desktop_7.png)
+*8. Editing a Specific Task*
+
+</details>
+
+## Getting Set Up Locally
 
 ### Prerequisites
 
@@ -167,3 +197,13 @@ Tasks include:
 -   Full CRUD for tasks
 -   Status tracking (Not Started, In Progress, Complete)
 -   Overdue highlighting for tasks
+
+## What I would add beyond the MVP
+
+This project is an MVP of the features requested by the brief. If I were to continue working on this project in the future, I would add the following:
+
+-   A thorough review of the GOV.UK frontend library to ensure best practices and optimal use of components and styles. Currently there may be a few inconsistencies with my implementation vs the guidelines set by the library.
+-   Whilst the backend has automated tests, the frontend currently does not. Automated tests would help ensure the stability of the site and also flag any UI bugs.
+-   Some files are quite large. Ideally the UI would be further split into components to improve readability.
+-   JSDoc comments for all functions and components for readability.
+-   Adding comments on complex snippets of code.

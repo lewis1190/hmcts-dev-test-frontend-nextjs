@@ -27,7 +27,7 @@ export default function Home() {
 
                         <h2 className="govuk-heading-m">About this service</h2>
                         <p className="govuk-body">
-                            This service allows users to create, manage, and track tasks with due dates and status updates. It has been designed to demonstrate the use of the GOV.UK Design System.
+                            This service allows users to create, manage, and track tasks with due dates and status updates.
                         </p>
 
                         <h2 className="govuk-heading-m">Resources</h2>
